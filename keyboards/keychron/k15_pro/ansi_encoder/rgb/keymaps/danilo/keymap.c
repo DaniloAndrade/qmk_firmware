@@ -58,6 +58,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,  _______,            _______,  _______,  _______,             _______,            _______,            _______,             _______,  _______,  _______),
 };
 
+// clang-format off
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT_90_ansi(
+    '*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*',
+    '*','*','*','*','*','*','*','*','*','*','*','*','*','*','*','*',
+    '*','L','L','L','L','L','L','R','R','R','R','R','R','R','R','*',
+    '*','L','L','L','L','L','L','R','R','R','R','R','R','R','*',
+    '*','L','L','L','L','L','L','L','R','R','R','R','R','R','*',
+    '*','L','L','L','L','*','R','R','R','*','*','*'
+);
+// clang-format on
+
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },

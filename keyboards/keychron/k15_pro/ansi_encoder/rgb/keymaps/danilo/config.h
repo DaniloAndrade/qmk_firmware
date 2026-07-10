@@ -8,3 +8,8 @@
  * resolvem como hold assim que a outra tecla é solta, sem esperar o
  * tapping term inteiro */
 #define PERMISSIVE_HOLD
+
+/* Chordal Hold: rede de segurança extra — só permite "hold" quando as duas
+ * teclas envolvidas são de mãos opostas; combos na mesma mão (rolls) sempre
+ * viram tap */
+#define CHORDAL_HOLD
