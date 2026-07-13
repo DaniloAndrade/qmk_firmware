@@ -115,6 +115,18 @@ dinamicamente.
 
 `TAPPING_TERM` permanece no default (200ms).
 
+> **Atualização (2026-07-13):** após uso real, `TAPPING_TERM` foi elevado
+> para **250ms** (`config.h`, commit `4ead2734b9`). Causa raiz: Flow Tap e
+> Chordal Hold só arbitram quando outra tecla *interrompe* um mod-tap
+> segurado (rolling/chord); uma tecla segurada sozinha, sem interrupção,
+> ainda resolve para "hold" por timeout puro do `TAPPING_TERM`, caminho que
+> nenhum dos dois mecanismos cobre. Dedos mais lentos (ex: mindinho,
+> digitando os GUIs externos do GACS) ocasionalmente ultrapassavam 200ms
+> sem intenção de segurar como modificador. 250ms é o teto da faixa que o
+> autor do Chordal Hold recomenda quando combinado com Permissive Hold +
+> Chordal Hold. Verificado em hardware: resolveu o disparo acidental sem
+> quebrar o combo deliberado.
+
 ## Chordal Hold — tabela de mãos (`chordal_hold_layout`)
 
 Tabela adicionada ao `keymap.c`, usando a mesma macro `LAYOUT_90_ansi` já
