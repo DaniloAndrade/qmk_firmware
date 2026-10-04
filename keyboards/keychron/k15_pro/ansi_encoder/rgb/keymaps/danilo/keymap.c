@@ -68,6 +68,44 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT_90_ans
 );
 // clang-format on
 
+// Same Backspace and bracket combos as the K3 Ultra ZMK keymap. Only keys that are not
+// home-row mods: QMK matches combos by keycode, so a Launcher MT() on D/F/J/K/S/L would
+// stop a KC_D/KC_F combo from ever matching.
+enum combos { COMBO_BSPC, COMBO_LBRC, COMBO_RBRC };
+
+const uint16_t PROGMEM bspc_combo[] = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM lbrc_combo[] = {KC_Z, KC_X, COMBO_END};
+const uint16_t PROGMEM rbrc_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+
+combo_t key_combos[] = {
+    [COMBO_BSPC] = COMBO(bspc_combo, KC_BSPC),
+    [COMBO_LBRC] = COMBO(lbrc_combo, KC_LBRC),
+    [COMBO_RBRC] = COMBO(rbrc_combo, KC_RBRC),
+};
+
+uint16_t get_combo_term(uint16_t index, combo_t *combo) {
+    // U+I is a common bigram, so it gets the tighter window (as in the ZMK keymap)
+    return index == COMBO_BSPC ? 18 : COMBO_TERM;
+}
+
+#define COMBO_IDLE_MS 150
+
+// QMK has no require-prior-idle: remember when the previous key went down. Combos are
+// evaluated in pre_process_record_quantum, before process_record_user runs for the current
+// key, so this still holds the previous press while a combo is being matched.
+static uint32_t last_press_time;
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        last_press_time = timer_read32();
+    }
+    return true;
+}
+
+bool combo_should_trigger(uint16_t combo_index, combo_t *combo, uint16_t keycode, keyrecord_t *record) {
+    return !IS_LAYER_ON(MAC_FN) && !IS_LAYER_ON(WIN_FN) && timer_elapsed32(last_press_time) >= COMBO_IDLE_MS;
+}
+
 #if defined(ENCODER_MAP_ENABLE)
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [MAC_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },

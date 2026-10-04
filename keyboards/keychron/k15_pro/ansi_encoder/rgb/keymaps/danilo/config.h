@@ -21,3 +21,11 @@
  * teclas envolvidas são de mãos opostas; combos na mesma mão (rolls) sempre
  * viram tap */
 #define CHORDAL_HOLD
+
+/* Combos (mesmos Backspace/colchetes do K3 Ultra): janela curta e por combo,
+ * e combo_should_trigger() no keymap.c bloqueia combos nas camadas Fn e
+ * exige uma pausa antes do primeiro toque, pra rolls de digitação não
+ * dispararem o combo. */
+#define COMBO_TERM 30
+#define COMBO_TERM_PER_COMBO
+#define COMBO_SHOULD_TRIGGER
